@@ -1,0 +1,25 @@
+{
+    "name": "giganteck/opcean-framework",
+    "version": "2.0.1",
+    "description": "A reusable WordPress library for managing Settings, Metaboxes, and Term Meta with a unified field rendering system",
+    "type": "library",
+    "keywords": ["wordpress", "settings", "metabox", "term-meta", "library", "framework"],
+    "license": "GPL-2.0-or-later",
+    "autoload": {
+        "psr-4": {
+            "Giganteck\\Opcean\\": "includes/"
+        },
+        "files": [
+            "includes/opcean.php"
+        ]
+    },
+    "authors": [
+        {
+            "name": "giganteck",
+            "email": "zbandhan@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.2"
+    }
+}
