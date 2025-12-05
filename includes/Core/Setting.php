@@ -281,7 +281,7 @@ class Setting extends FormBuilderBase implements SettingInterface {
     public function adminSettingPage(): void
     {
         ?>
-            <div class="wrap">
+            <div class="opcean wrap">
                 <h1><?php echo esc_html($this->pageTitle) ?></h1>
                 <?php echo wp_kses_post($this->showNavigation()); ?>
                 <div class="options_group">
@@ -327,19 +327,19 @@ class Setting extends FormBuilderBase implements SettingInterface {
             let currentTab = window.location.hash || getStoredTab();
 
             // Hide all groups
-            querySelectorAll(".group").forEach(group => group.style.display = "none");
+            querySelectorAll("div.opcean.wrap .options_group .group").forEach(group => group.style.display = "none");
 
             // Show active tab
             if (currentTab && querySelector(currentTab)) {
                 querySelector(currentTab).style.display = "block";
                 storeActiveTab(currentTab);
             } else {
-                querySelector(".group").style.display = "block";
-                currentTab = querySelector(".group").id ? "#" + querySelector(".group").id : "";
+                querySelector("div.opcean.wrap .options_group .group").style.display = "block";
+                currentTab = querySelector("div.opcean.wrap .options_group .group").id ? "#" + querySelector("div.opcean.wrap .options_group .group").id : "";
             }
 
             // Handle collapsed sections
-            querySelectorAll(".group .collapsed").forEach(collapsedSection => {
+            querySelectorAll("div.opcean.wrap .options_group .group .collapsed").forEach(collapsedSection => {
                 const checkedInput = collapsedSection.querySelector("input:checked");
                 if (checkedInput) {
                     let nextElement = checkedInput.parentElement.parentElement.parentElement.nextElementSibling;
@@ -353,8 +353,8 @@ class Setting extends FormBuilderBase implements SettingInterface {
 
             // Set active tab indicator
             const setActiveTabIndicator = (tabHref) => {
-                querySelectorAll(".nav-tab-wrapper a").forEach(link => link.classList.remove("nav-tab-active"));
-                const activeLink = querySelector(`.nav-tab-wrapper a[href="${tabHref}"]`);
+                querySelectorAll("div.opcean.wrap .nav-tab-wrapper a").forEach(link => link.classList.remove("nav-tab-active"));
+                const activeLink = querySelector(`div.opcean.wrap .nav-tab-wrapper a[href="${tabHref}"]`);
                 if (activeLink) activeLink.classList.add("nav-tab-active");
             };
 
@@ -362,7 +362,7 @@ class Setting extends FormBuilderBase implements SettingInterface {
             if (currentTab && querySelector(currentTab)) {
                 setActiveTabIndicator(currentTab);
             } else {
-                const firstTabLink = querySelector(".nav-tab-wrapper a");
+                const firstTabLink = querySelector("div.opcean.wrap .nav-tab-wrapper a");
                 if (firstTabLink) {
                     const href = firstTabLink.getAttribute("href");
                     setActiveTabIndicator(href);
@@ -370,14 +370,14 @@ class Setting extends FormBuilderBase implements SettingInterface {
             }
 
             // Tab click handler
-            querySelectorAll(".nav-tab-wrapper a").forEach(tabLink => {
+            querySelectorAll("div.opcean.wrap .nav-tab-wrapper a").forEach(tabLink => {
                 tabLink.addEventListener("click", (e) => {
                     e.preventDefault();
                     const tabHref = tabLink.getAttribute("href");
                     const targetTabContent = querySelector(tabHref);
                     if (targetTabContent) {
                         setActiveTabIndicator(tabHref);
-                        querySelectorAll(".group").forEach(group => group.style.display = "none");
+                        querySelectorAll("div.opcean.wrap .options_group .group").forEach(group => group.style.display = "none");
                         targetTabContent.style.display = "block";
                         tabLink.blur();
                         storeActiveTab(tabHref);
