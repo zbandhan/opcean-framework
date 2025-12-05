@@ -319,69 +319,68 @@ class Setting extends FormBuilderBase implements SettingInterface {
         }
 
         wp_add_inline_script('common', '
-            const store = s => localStorage?.setItem("activetab", s);
-            const get = () => localStorage?.getItem("activetab") || "";
-            const qs = s => document.querySelector(s);
-            const qsa = s => document.querySelectorAll(s);
+            const storeActiveTab = tabId => localStorage?.setItem("activetab", tabId);
+            const getStoredTab = () => localStorage?.getItem("activetab") || "";
+            const querySelector = selector => document.querySelector(selector);
+            const querySelectorAll = selector => document.querySelectorAll(selector);
 
-            let tab = window.location.hash || get();
+            let currentTab = window.location.hash || getStoredTab();
 
             // Hide all groups
-            qsa(".group").forEach(el => el.style.display = "none");
+            querySelectorAll(".group").forEach(group => group.style.display = "none");
 
             // Show active tab
-            if (tab && qs(tab)) {
-                qs(tab).style.display = "block";
-                store(tab);
+            if (currentTab && querySelector(currentTab)) {
+                querySelector(currentTab).style.display = "block";
+                storeActiveTab(currentTab);
             } else {
-                qs(".group").style.display = "block";
-                tab = qs(".group").id ? "#" + qs(".group").id : "";
+                querySelector(".group").style.display = "block";
+                currentTab = querySelector(".group").id ? "#" + querySelector(".group").id : "";
             }
 
             // Handle collapsed sections
-            qsa(".group .collapsed").forEach(el => {
-                const checked = el.querySelector("input:checked");
-                if (checked) {
-                    let next = checked.parentElement.parentElement.parentElement.nextElementSibling;
-                    while (next) {
-                        next.classList.remove("hidden");
-                        if (next.classList.contains("last")) break;
-                        next = next.nextElementSibling;
+            querySelectorAll(".group .collapsed").forEach(collapsedSection => {
+                const checkedInput = collapsedSection.querySelector("input:checked");
+                if (checkedInput) {
+                    let nextElement = checkedInput.parentElement.parentElement.parentElement.nextElementSibling;
+                    while (nextElement) {
+                        nextElement.classList.remove("hidden");
+                        if (nextElement.classList.contains("last")) break;
+                        nextElement = nextElement.nextElementSibling;
                     }
                 }
             });
 
             // Set active tab indicator
-            const setActive = (href) => {
-                qsa(".nav-tab-wrapper a").forEach(a => a.classList.remove("nav-tab-active"));
-                const activeLink = qs(`.nav-tab-wrapper a[href="${href}"]`);
+            const setActiveTabIndicator = (tabHref) => {
+                querySelectorAll(".nav-tab-wrapper a").forEach(link => link.classList.remove("nav-tab-active"));
+                const activeLink = querySelector(`.nav-tab-wrapper a[href="${tabHref}"]`);
                 if (activeLink) activeLink.classList.add("nav-tab-active");
             };
 
             // Initialize active tab on load
-            if (tab && qs(tab)) {
-                setActive(tab);
+            if (currentTab && querySelector(currentTab)) {
+                setActiveTabIndicator(currentTab);
             } else {
-                const firstLink = qs(".nav-tab-wrapper a");
-                if (firstLink) {
-                    const href = firstLink.getAttribute("href");
-                    setActive(href);
+                const firstTabLink = querySelector(".nav-tab-wrapper a");
+                if (firstTabLink) {
+                    const href = firstTabLink.getAttribute("href");
+                    setActiveTabIndicator(href);
                 }
             }
 
             // Tab click handler
-            qsa(".nav-tab-wrapper a").forEach(link => {
-                link.addEventListener("click", (e) => {
+            querySelectorAll(".nav-tab-wrapper a").forEach(tabLink => {
+                tabLink.addEventListener("click", (e) => {
                     e.preventDefault();
-                    const href = link.getAttribute("href");
-                    const target = qs(href);
-
-                    if (target) {
-                        setActive(href);
-                        qsa(".group").forEach(g => g.style.display = "none");
-                        target.style.display = "block";
-                        link.blur();
-                        store(href);
+                    const tabHref = tabLink.getAttribute("href");
+                    const targetTabContent = querySelector(tabHref);
+                    if (targetTabContent) {
+                        setActiveTabIndicator(tabHref);
+                        querySelectorAll(".group").forEach(group => group.style.display = "none");
+                        targetTabContent.style.display = "block";
+                        tabLink.blur();
+                        storeActiveTab(tabHref);
                     }
                 });
             });
