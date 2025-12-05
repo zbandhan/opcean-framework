@@ -3,7 +3,7 @@
 * Plugin Name:       Opcean Framework
 * Plugin URI:        https://github.com/zbandhan/opcean-framework
 * Description:       Ocean Framework: Metabox and Options Page Made Easy and Smooth
-* Version:           1.0.0
+* Version:           1.0.1
 * Requires at least: 5.2
 * Requires PHP:      7.4
 * Author:            Giganteck
