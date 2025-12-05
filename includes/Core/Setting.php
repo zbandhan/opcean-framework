@@ -282,7 +282,7 @@ class Setting extends FormBuilderBase implements SettingInterface {
     {
         ?>
             <div class="wrap">
-                <h1><?php esc_html($this->pageTitle) ?></h1>
+                <h1><?php echo esc_html($this->pageTitle) ?></h1>
                 <?php echo wp_kses_post($this->showNavigation()); ?>
                 <div class="options_group">
                     <?php foreach ($this->settingsSections as $formId => $form) : ?>
